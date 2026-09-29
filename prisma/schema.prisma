@@ -14,7 +14,8 @@ model Organization {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  memberships Membership[]
+  memberships  Membership[]
+  subscription Subscription?
 
   @@map("organizations")
 }
@@ -50,4 +51,28 @@ model Membership {
 
   @@unique([user_id, organization_id])
   @@map("memberships")
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  SUSPENDED
+  CANCELLED
+}
+
+model Subscription {
+  subscription_id String             @id @default(uuid())
+  organization_id String             @unique
+  plan            Plan
+  status          SubscriptionStatus
+  started_at      DateTime           @default(now())
+
+  organization Organization @relation(fields: [organization_id], references: [org_id])
+
+  @@map("subscriptions")
 }

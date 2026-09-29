@@ -15,3 +15,14 @@ export const createMembershipSchema = z.object({
   organization_id: z.string().min(1),
   role: z.enum(["OWNER", "ADMIN", "MEMBER"]),
 });
+
+export const createSubscriptionSchema = z.object({
+  organization_id: z.string().min(1),
+  plan: z.enum(["FREE", "PRO", "ENTERPRISE"]),
+  status: z.enum(["ACTIVE", "SUSPENDED", "CANCELLED"]).optional(),
+  started_at: z.coerce.date().optional(),
+});
+
+export const updateSubscriptionStatusSchema = z.object({
+  status: z.enum(["ACTIVE", "SUSPENDED", "CANCELLED"]),
+});

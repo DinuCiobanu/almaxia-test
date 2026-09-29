@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CAPABILITIES } from "../app/entitlements/entitlement";
 
 export const createOrganizationSchema = z.object({
   name: z.string().min(1),
@@ -25,4 +26,8 @@ export const createSubscriptionSchema = z.object({
 
 export const updateSubscriptionStatusSchema = z.object({
   status: z.enum(["ACTIVE", "SUSPENDED", "CANCELLED"]),
+});
+
+export const capabilityParamSchema = z.object({
+  capability: z.enum(CAPABILITIES),
 });

@@ -74,3 +74,8 @@ GET    /health
 `GET /organizations/:id/entitlements` returns `{ plan, capabilities }` for
 the org's active subscription. With `?capability=X` it instead returns
 `{ canUse: boolean }` for just that one capability.
+
+## Frontend
+
+`ui/` is a separate Vite + React + TypeScript app (its own `package.json`) —
+an "Organization Overview" page against this API. See `ui/README.md`.

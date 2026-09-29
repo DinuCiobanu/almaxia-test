@@ -9,6 +9,7 @@
     "start": "node dist/http/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:test": "tsx prisma/migrate-test.ts",
     "prisma:seed": "tsx prisma/seed.ts",
     "test": "mocha",
     "prepare": "husky"

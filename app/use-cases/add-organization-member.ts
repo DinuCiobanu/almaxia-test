@@ -2,8 +2,8 @@ import type { Membership, Role } from "../memberships/membership";
 import type { MembershipRepository } from "../memberships/membership-repository";
 
 export type CreateMembershipInput = {
-  user_id: string;
-  organization_id: string;
+  user_id: number;
+  organization_id: number;
   role: Role;
 };
 

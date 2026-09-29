@@ -1,5 +1,5 @@
 export type Organization = {
-  org_id: string;
+  org_id: number;
   name: string;
   country: string;
   created_at: Date;

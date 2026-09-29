@@ -4,7 +4,7 @@ import { STATUSES } from "../subscriptions/subscription";
 import type { SubscriptionRepository } from "../subscriptions/subscription-repository";
 
 export type CanUseCapabilityInput = {
-  organization_id: string;
+  organization_id: number;
   capability: Capability;
 };
 

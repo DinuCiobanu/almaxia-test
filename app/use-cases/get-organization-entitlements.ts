@@ -11,7 +11,7 @@ export type OrganizationEntitlements = {
 export class GetOrganizationEntitlementsUC {
   constructor(private readonly repo: SubscriptionRepository) {}
 
-  async execute(organization_id: string): Promise<OrganizationEntitlements> {
+  async execute(organization_id: number): Promise<OrganizationEntitlements> {
     const subscription = await this.repo.findByOrganizationId(organization_id);
     if (!subscription || subscription.status !== STATUSES.ACTIVE)
       return { plan: null, capabilities: [] };

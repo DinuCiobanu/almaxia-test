@@ -3,6 +3,6 @@ import type { Membership } from "./membership";
 
 export type MembershipRepository = {
   create(input: CreateMembershipInput): Promise<Membership>;
-  findByOrganizationId(organization_id: string): Promise<Membership[]>;
-  deleteByOrganizationId(organization_id: string): Promise<void>;
+  findByOrganizationId(organization_id: number): Promise<Membership[]>;
+  deleteByOrganizationId(organization_id: number): Promise<void>;
 };

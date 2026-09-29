@@ -5,6 +5,7 @@ import { AddOrganizationMemberUC } from "../../app/use-cases/add-organization-me
 import { ListOrganizationMembersUC } from "../../app/use-cases/list-organization-members";
 import { validateBody } from "../validate-body";
 import { respond } from "../respond";
+import { parseId } from "../parse-id";
 import { addMemberRequest, membershipSchema, membershipListSchema } from "../../contracts/api";
 
 const router = express.Router();
@@ -12,9 +13,11 @@ const addOrganizationMember = new AddOrganizationMemberUC(membershipRepository);
 const listOrganizationMembers = new ListOrganizationMembersUC(membershipRepository);
 
 router.post("/organizations/:id/members", validateBody(addMemberRequest), async (req, res) => {
+  const organizationId = parseId(req, res);
+  if (organizationId === undefined) return;
   try {
     const membership = await addOrganizationMember.execute({
-      organization_id: req.params.id,
+      organization_id: organizationId,
       user_id: req.body.user_id,
       role: req.body.role,
     });
@@ -29,7 +32,9 @@ router.post("/organizations/:id/members", validateBody(addMemberRequest), async 
 });
 
 router.get("/organizations/:id/members", async (req, res) => {
-  const members = await listOrganizationMembers.execute(req.params.id);
+  const organizationId = parseId(req, res);
+  if (organizationId === undefined) return;
+  const members = await listOrganizationMembers.execute(organizationId);
   respond(res, membershipListSchema, members);
 });
 

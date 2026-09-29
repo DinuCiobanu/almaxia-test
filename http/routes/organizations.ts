@@ -5,6 +5,7 @@ import { CreateOrganizationUC } from "../../app/use-cases/create-organization";
 import { GetOrganizationUC } from "../../app/use-cases/get-organization";
 import { validateBody } from "../validate-body";
 import { respond } from "../respond";
+import { parseId } from "../parse-id";
 import { createOrganizationRequest, organizationSchema } from "../../contracts/api";
 
 const router = express.Router();
@@ -17,8 +18,10 @@ router.post("/organizations", validateBody(createOrganizationRequest), async (re
 });
 
 router.get("/organizations/:id", async (req, res) => {
+  const id = parseId(req, res);
+  if (id === undefined) return;
   try {
-    const organization = await getOrganization.execute(req.params.id);
+    const organization = await getOrganization.execute(id);
     respond(res, organizationSchema, organization);
   } catch (error) {
     if (error instanceof OrganizationNotFoundError) {

@@ -8,8 +8,8 @@ import { AddOrganizationMemberUC } from "./add-organization-member";
 
 describe("AddOrganizationMemberUC", () => {
   const addOrganizationMember = new AddOrganizationMemberUC(membershipRepository);
-  let organizationId: string;
-  let userId: string;
+  let organizationId: number;
+  let userId: number;
 
   beforeEach(async () => {
     const org = await organizationRepository.create({ name: "Spec Org", country: "US" });

@@ -19,8 +19,8 @@ export type SubscriptionStatus = (typeof STATUSES)[keyof typeof STATUSES];
 export const SUBSCRIPTION_STATUSES = Object.values(STATUSES);
 
 export type Subscription = {
-  subscription_id: string;
-  organization_id: string;
+  subscription_id: number;
+  organization_id: number;
   plan: Plan;
   status: SubscriptionStatus;
   started_at: Date;

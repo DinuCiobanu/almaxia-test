@@ -18,6 +18,9 @@ import { CAPABILITIES } from "../app/entitlements/entitlement";
 
 export { ROLE_VALUES, PLANS, SUBSCRIPTION_STATUSES, CAPABILITIES };
 
+// Every id is a positive autoincrement integer.
+export const idSchema = z.number().int().positive();
+
 // ---------- Organization ----------
 
 export const createOrganizationRequest = z.object({
@@ -27,7 +30,7 @@ export const createOrganizationRequest = z.object({
 export type CreateOrganizationRequest = z.infer<typeof createOrganizationRequest>;
 
 export const organizationSchema = z.object({
-  org_id: z.string(),
+  org_id: idSchema,
   name: z.string(),
   country: z.string(),
   created_at: z.string(),
@@ -41,15 +44,15 @@ export const roleSchema = z.enum(ROLE_VALUES);
 export type Role = z.infer<typeof roleSchema>;
 
 export const addMemberRequest = z.object({
-  user_id: z.string().min(1),
+  user_id: idSchema,
   role: roleSchema,
 });
 export type AddMemberRequest = z.infer<typeof addMemberRequest>;
 
 export const membershipSchema = z.object({
-  membership_id: z.string(),
-  user_id: z.string(),
-  organization_id: z.string(),
+  membership_id: idSchema,
+  user_id: idSchema,
+  organization_id: idSchema,
   role: roleSchema,
   created_at: z.string(),
   updated_at: z.string(),
@@ -81,8 +84,8 @@ export const updateSubscriptionStatusRequest = z.object({
 export type UpdateSubscriptionStatusRequest = z.infer<typeof updateSubscriptionStatusRequest>;
 
 export const subscriptionSchema = z.object({
-  subscription_id: z.string(),
-  organization_id: z.string(),
+  subscription_id: idSchema,
+  organization_id: idSchema,
   plan: planSchema,
   status: subscriptionStatusSchema,
   started_at: z.string(),
@@ -114,7 +117,7 @@ export const createUserRequest = z.object({
 export type CreateUserRequest = z.infer<typeof createUserRequest>;
 
 export const userSchema = z.object({
-  user_id: z.string(),
+  user_id: idSchema,
   email: z.string(),
   name: z.string(),
   created_at: z.string(),

@@ -12,11 +12,12 @@ function toOpenApiPath(path: string): string {
 }
 
 function pathParameters(path: string) {
+  // Every path param in this API is a numeric id.
   return [...path.matchAll(/:([a-zA-Z0-9_]+)/g)].map((match) => ({
     name: match[1],
     in: "path",
     required: true,
-    schema: { type: "string" },
+    schema: { type: "integer" },
   }));
 }
 

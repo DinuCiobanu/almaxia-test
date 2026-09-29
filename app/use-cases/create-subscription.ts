@@ -2,7 +2,7 @@ import type { Plan, Subscription, SubscriptionStatus } from "../subscriptions/su
 import type { SubscriptionRepository } from "../subscriptions/subscription-repository";
 
 export type CreateSubscriptionInput = {
-  organization_id: string;
+  organization_id: number;
   plan: Plan;
   status?: SubscriptionStatus;
   started_at?: Date;

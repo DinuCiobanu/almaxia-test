@@ -8,7 +8,7 @@ import { CanUseCapabilityUC } from "./can-use-capability";
 
 describe("CanUseCapabilityUC", () => {
   const canUseCapability = new CanUseCapabilityUC(subscriptionRepository);
-  let organizationId: string;
+  let organizationId: number;
 
   async function givenOrganization(plan?: Plan, status?: SubscriptionStatus) {
     const org = await organizationRepository.create({ name: "Spec Org", country: "US" });

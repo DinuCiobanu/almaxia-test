@@ -6,7 +6,7 @@ import { CreateUserUC } from "./create-user";
 describe("CreateUserUC", () => {
   const createUser = new CreateUserUC(userRepository);
   const email = "create-user-spec@test.com";
-  let userId: string;
+  let userId: number;
 
   afterEach(async () => {
     await userRepository.delete(userId);
@@ -17,7 +17,7 @@ describe("CreateUserUC", () => {
     userId = user.user_id;
     expect(user.email).to.equal(email);
     expect(user.name).to.equal("Spec User");
-    expect(user.user_id).to.be.a("string").that.is.not.empty;
+    expect(user.user_id).to.be.a("number");
   });
 
   it("throws EmailAlreadyExistsError on duplicate email", async () => {

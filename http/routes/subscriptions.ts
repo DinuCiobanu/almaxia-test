@@ -9,6 +9,7 @@ import { UpdateSubscriptionStatusUC } from "../../app/use-cases/update-subscript
 import { GetOrganizationSubscriptionUC } from "../../app/use-cases/get-organization-subscription";
 import { validateBody } from "../validate-body";
 import { respond } from "../respond";
+import { parseId } from "../parse-id";
 import {
   createSubscriptionRequest,
   updateSubscriptionStatusRequest,
@@ -24,9 +25,11 @@ router.post(
   "/organizations/:id/subscription",
   validateBody(createSubscriptionRequest),
   async (req, res) => {
+    const organizationId = parseId(req, res);
+    if (organizationId === undefined) return;
     try {
       const subscription = await createSubscription.execute({
-        organization_id: req.params.id,
+        organization_id: organizationId,
         ...req.body,
       });
       respond(res, subscriptionSchema, subscription, 201);
@@ -41,8 +44,10 @@ router.post(
 );
 
 router.get("/organizations/:id/subscription", async (req, res) => {
+  const organizationId = parseId(req, res);
+  if (organizationId === undefined) return;
   try {
-    const subscription = await getOrganizationSubscription.execute(req.params.id);
+    const subscription = await getOrganizationSubscription.execute(organizationId);
     respond(res, subscriptionSchema, subscription);
   } catch (error) {
     if (error instanceof SubscriptionNotFoundError) {
@@ -57,9 +62,11 @@ router.patch(
   "/organizations/:id/subscription/status",
   validateBody(updateSubscriptionStatusRequest),
   async (req, res) => {
+    const organizationId = parseId(req, res);
+    if (organizationId === undefined) return;
     try {
       const subscription = await updateSubscriptionStatus.execute({
-        organization_id: req.params.id,
+        organization_id: organizationId,
         status: req.body.status,
       });
       respond(res, subscriptionSchema, subscription);

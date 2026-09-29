@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Organization {
-  org_id     String   @id @default(uuid())
+  org_id     Int      @id @default(autoincrement())
   name       String
   country    String
   created_at DateTime @default(now())
@@ -21,7 +21,7 @@ model Organization {
 }
 
 model User {
-  user_id    String   @id @default(uuid())
+  user_id    Int      @id @default(autoincrement())
   email      String   @unique
   name       String
   created_at DateTime @default(now())
@@ -39,9 +39,9 @@ enum Role {
 }
 
 model Membership {
-  membership_id   String   @id @default(uuid())
-  user_id         String
-  organization_id String
+  membership_id   Int      @id @default(autoincrement())
+  user_id         Int
+  organization_id Int
   role            Role
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
@@ -66,8 +66,8 @@ enum SubscriptionStatus {
 }
 
 model Subscription {
-  subscription_id String             @id @default(uuid())
-  organization_id String             @unique
+  subscription_id Int                @id @default(autoincrement())
+  organization_id Int                @unique
   plan            Plan
   status          SubscriptionStatus
   started_at      DateTime           @default(now())

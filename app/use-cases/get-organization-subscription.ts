@@ -5,7 +5,7 @@ import type { SubscriptionRepository } from "../subscriptions/subscription-repos
 export class GetOrganizationSubscriptionUC {
   constructor(private readonly repo: SubscriptionRepository) {}
 
-  async execute(organization_id: string): Promise<Subscription> {
+  async execute(organization_id: number): Promise<Subscription> {
     const subscription = await this.repo.findByOrganizationId(organization_id);
     if (!subscription) throw new SubscriptionNotFoundError(organization_id);
     return subscription;

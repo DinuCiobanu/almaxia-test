@@ -2,7 +2,7 @@ import type { Subscription, SubscriptionStatus } from "../subscriptions/subscrip
 import type { SubscriptionRepository } from "../subscriptions/subscription-repository";
 
 export type UpdateSubscriptionStatusInput = {
-  organization_id: string;
+  organization_id: number;
   status: SubscriptionStatus;
 };
 

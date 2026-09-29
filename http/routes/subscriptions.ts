@@ -8,7 +8,12 @@ import { CreateSubscriptionUC } from "../../app/use-cases/create-subscription";
 import { UpdateSubscriptionStatusUC } from "../../app/use-cases/update-subscription-status";
 import { GetOrganizationSubscriptionUC } from "../../app/use-cases/get-organization-subscription";
 import { validateBody } from "../validate-body";
-import { createSubscriptionSchema, updateSubscriptionStatusSchema } from "../schemas";
+import { respond } from "../respond";
+import {
+  createSubscriptionRequest,
+  updateSubscriptionStatusRequest,
+  subscriptionSchema,
+} from "../../contracts/api";
 
 const router = express.Router();
 const createSubscription = new CreateSubscriptionUC(subscriptionRepository);
@@ -17,14 +22,14 @@ const getOrganizationSubscription = new GetOrganizationSubscriptionUC(subscripti
 
 router.post(
   "/organizations/:id/subscription",
-  validateBody(createSubscriptionSchema),
+  validateBody(createSubscriptionRequest),
   async (req, res) => {
     try {
       const subscription = await createSubscription.execute({
         organization_id: req.params.id,
         ...req.body,
       });
-      res.status(201).json(subscription);
+      respond(res, subscriptionSchema, subscription, 201);
     } catch (error) {
       if (error instanceof OrganizationAlreadyHasSubscriptionError) {
         res.status(409).json({ error: error.message });
@@ -38,7 +43,7 @@ router.post(
 router.get("/organizations/:id/subscription", async (req, res) => {
   try {
     const subscription = await getOrganizationSubscription.execute(req.params.id);
-    res.json(subscription);
+    respond(res, subscriptionSchema, subscription);
   } catch (error) {
     if (error instanceof SubscriptionNotFoundError) {
       res.status(404).json({ error: error.message });
@@ -50,14 +55,14 @@ router.get("/organizations/:id/subscription", async (req, res) => {
 
 router.patch(
   "/organizations/:id/subscription/status",
-  validateBody(updateSubscriptionStatusSchema),
+  validateBody(updateSubscriptionStatusRequest),
   async (req, res) => {
     try {
       const subscription = await updateSubscriptionStatus.execute({
         organization_id: req.params.id,
         status: req.body.status,
       });
-      res.json(subscription);
+      respond(res, subscriptionSchema, subscription);
     } catch (error) {
       if (error instanceof SubscriptionNotFoundError) {
         res.status(404).json({ error: error.message });

@@ -5,6 +5,7 @@ import usersRouter from "./routes/users";
 import membersRouter from "./routes/members";
 import subscriptionsRouter from "./routes/subscriptions";
 import entitlementsRouter from "./routes/entitlements";
+import openapiRouter from "./routes/openapi";
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use(usersRouter);
 app.use(membersRouter);
 app.use(subscriptionsRouter);
 app.use(entitlementsRouter);
+app.use(openapiRouter);
 
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, () => console.log(`listening on :${port}`));

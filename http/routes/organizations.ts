@@ -4,21 +4,22 @@ import { OrganizationNotFoundError } from "../../app/organizations/errors";
 import { CreateOrganizationUC } from "../../app/use-cases/create-organization";
 import { GetOrganizationUC } from "../../app/use-cases/get-organization";
 import { validateBody } from "../validate-body";
-import { createOrganizationSchema } from "../schemas";
+import { respond } from "../respond";
+import { createOrganizationRequest, organizationSchema } from "../../contracts/api";
 
 const router = express.Router();
 const createOrganization = new CreateOrganizationUC(organizationRepository);
 const getOrganization = new GetOrganizationUC(organizationRepository);
 
-router.post("/organizations", validateBody(createOrganizationSchema), async (req, res) => {
+router.post("/organizations", validateBody(createOrganizationRequest), async (req, res) => {
   const organization = await createOrganization.execute(req.body);
-  res.status(201).json(organization);
+  respond(res, organizationSchema, organization, 201);
 });
 
 router.get("/organizations/:id", async (req, res) => {
   try {
     const organization = await getOrganization.execute(req.params.id);
-    res.json(organization);
+    respond(res, organizationSchema, organization);
   } catch (error) {
     if (error instanceof OrganizationNotFoundError) {
       res.status(404).json({ error: error.message });

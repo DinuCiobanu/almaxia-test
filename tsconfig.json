@@ -12,6 +12,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["http", "app", "prisma/seed.ts"],
+  "include": ["http", "app", "contracts", "prisma/seed.ts"],
   "exclude": ["node_modules", "dist"]
 }

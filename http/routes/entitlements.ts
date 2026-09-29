@@ -4,6 +4,8 @@ import { subscriptionRepository } from "../../app/subscriptions/prisma-subscript
 import { CanUseCapabilityUC } from "../../app/use-cases/can-use-capability";
 import { GetOrganizationEntitlementsUC } from "../../app/use-cases/get-organization-entitlements";
 import { capabilityQuerySchema } from "../schemas";
+import { respond } from "../respond";
+import { entitlementsSchema, canUseResponseSchema } from "../../contracts/api";
 
 const router = express.Router();
 const canUseCapability = new CanUseCapabilityUC(subscriptionRepository);
@@ -23,12 +25,12 @@ router.get("/organizations/:id/entitlements", async (req, res) => {
       organization_id: req.params.id,
       capability: parsed.data.capability,
     });
-    res.json({ canUse });
+    respond(res, canUseResponseSchema, { canUse });
     return;
   }
 
   const entitlements = await getOrganizationEntitlements.execute(req.params.id);
-  res.json(entitlements);
+  respond(res, entitlementsSchema, entitlements);
 });
 
 export default router;

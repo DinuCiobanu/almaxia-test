@@ -10,7 +10,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "husky"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
@@ -23,6 +24,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
     "chai": "^6.2.2",
+    "husky": "^9.1.7",
     "mocha": "^12.0.2",
     "prisma": "^6.1.0",
     "tsx": "^4.19.2",

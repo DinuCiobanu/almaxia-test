@@ -1,13 +1,13 @@
 import express from "express";
 import { z } from "zod";
-import { prismaSubscriptionRepository } from "../../app/subscriptions/prisma-subscription-repository";
+import { subscriptionRepository } from "../../app/subscriptions/prisma-subscription-repository";
 import { CanUseCapabilityUC } from "../../app/use-cases/can-use-capability";
 import { GetOrganizationEntitlementsUC } from "../../app/use-cases/get-organization-entitlements";
 import { capabilityQuerySchema } from "../schemas";
 
 const router = express.Router();
-const canUseCapability = new CanUseCapabilityUC(prismaSubscriptionRepository);
-const getOrganizationEntitlements = new GetOrganizationEntitlementsUC(prismaSubscriptionRepository);
+const canUseCapability = new CanUseCapabilityUC(subscriptionRepository);
+const getOrganizationEntitlements = new GetOrganizationEntitlementsUC(subscriptionRepository);
 
 // GET /organizations/:id/entitlements           -> full { plan, capabilities } for the org
 // GET /organizations/:id/entitlements?capability=EVIDENCE_CAPTURE -> { canUse } for just that one

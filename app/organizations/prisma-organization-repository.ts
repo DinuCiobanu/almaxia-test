@@ -13,7 +13,7 @@ function toOrganization(row: OrganizationRow): Organization {
   };
 }
 
-export const prismaOrganizationRepository: OrganizationRepository = {
+export const organizationRepository: OrganizationRepository = {
   create: async (input): Promise<Organization> => {
     const row = await prisma.organization.create({ data: input });
     return toOrganization(row);
@@ -22,5 +22,9 @@ export const prismaOrganizationRepository: OrganizationRepository = {
   findById: async (org_id): Promise<Organization | null> => {
     const row = await prisma.organization.findUnique({ where: { org_id } });
     return row ? toOrganization(row) : null;
+  },
+
+  delete: async (org_id): Promise<void> => {
+    await prisma.organization.delete({ where: { org_id } });
   },
 };

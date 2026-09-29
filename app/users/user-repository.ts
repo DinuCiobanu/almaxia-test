@@ -3,4 +3,5 @@ import type { User } from "./user";
 
 export type UserRepository = {
   create(input: CreateUserInput): Promise<User>;
+  delete(user_id: string): Promise<void>;
 };

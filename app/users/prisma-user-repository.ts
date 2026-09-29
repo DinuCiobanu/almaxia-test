@@ -4,7 +4,7 @@ import { EmailAlreadyExistsError } from "./errors";
 import type { User } from "./user";
 import type { UserRepository } from "./user-repository";
 
-export const prismaUserRepository: UserRepository = {
+export const userRepository: UserRepository = {
   create: async (input): Promise<User> => {
     try {
       const row = await prisma.user.create({ data: input });
@@ -21,5 +21,9 @@ export const prismaUserRepository: UserRepository = {
       }
       throw error;
     }
+  },
+
+  delete: async (user_id): Promise<void> => {
+    await prisma.user.delete({ where: { user_id } });
   },
 };

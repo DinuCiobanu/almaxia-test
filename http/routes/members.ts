@@ -1,5 +1,5 @@
 import express from "express";
-import { prismaMembershipRepository } from "../../app/memberships/prisma-membership-repository";
+import { membershipRepository } from "../../app/memberships/prisma-membership-repository";
 import { MembershipAlreadyExistsError } from "../../app/memberships/errors";
 import { AddOrganizationMemberUC } from "../../app/use-cases/add-organization-member";
 import { ListOrganizationMembersUC } from "../../app/use-cases/list-organization-members";
@@ -7,8 +7,8 @@ import { validateBody } from "../validate-body";
 import { addMemberSchema } from "../schemas";
 
 const router = express.Router();
-const addOrganizationMember = new AddOrganizationMemberUC(prismaMembershipRepository);
-const listOrganizationMembers = new ListOrganizationMembersUC(prismaMembershipRepository);
+const addOrganizationMember = new AddOrganizationMemberUC(membershipRepository);
+const listOrganizationMembers = new ListOrganizationMembersUC(membershipRepository);
 
 router.post("/organizations/:id/members", validateBody(addMemberSchema), async (req, res) => {
   try {

@@ -1,5 +1,5 @@
 import express from "express";
-import { prismaOrganizationRepository } from "../../app/organizations/prisma-organization-repository";
+import { organizationRepository } from "../../app/organizations/prisma-organization-repository";
 import { OrganizationNotFoundError } from "../../app/organizations/errors";
 import { CreateOrganizationUC } from "../../app/use-cases/create-organization";
 import { GetOrganizationUC } from "../../app/use-cases/get-organization";
@@ -7,8 +7,8 @@ import { validateBody } from "../validate-body";
 import { createOrganizationSchema } from "../schemas";
 
 const router = express.Router();
-const createOrganization = new CreateOrganizationUC(prismaOrganizationRepository);
-const getOrganization = new GetOrganizationUC(prismaOrganizationRepository);
+const createOrganization = new CreateOrganizationUC(organizationRepository);
+const getOrganization = new GetOrganizationUC(organizationRepository);
 
 router.post("/organizations", validateBody(createOrganizationSchema), async (req, res) => {
   const organization = await createOrganization.execute(req.body);

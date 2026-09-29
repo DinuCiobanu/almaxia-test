@@ -1,12 +1,12 @@
 import express from "express";
-import { prismaUserRepository } from "../../app/users/prisma-user-repository";
+import { userRepository } from "../../app/users/prisma-user-repository";
 import { EmailAlreadyExistsError } from "../../app/users/errors";
 import { CreateUserUC } from "../../app/use-cases/create-user";
 import { validateBody } from "../validate-body";
 import { createUserSchema } from "../schemas";
 
 const router = express.Router();
-const createUser = new CreateUserUC(prismaUserRepository);
+const createUser = new CreateUserUC(userRepository);
 
 router.post("/users", validateBody(createUserSchema), async (req, res) => {
   try {

@@ -14,7 +14,7 @@ function toSubscription(row: SubscriptionRow): Subscription {
   };
 }
 
-export const prismaSubscriptionRepository: SubscriptionRepository = {
+export const subscriptionRepository: SubscriptionRepository = {
   create: async (input): Promise<Subscription> => {
     try {
       const row = await prisma.subscription.create({
@@ -52,5 +52,9 @@ export const prismaSubscriptionRepository: SubscriptionRepository = {
   findByOrganizationId: async (organization_id): Promise<Subscription | null> => {
     const row = await prisma.subscription.findUnique({ where: { organization_id } });
     return row ? toSubscription(row) : null;
+  },
+
+  deleteByOrganizationId: async (organization_id): Promise<void> => {
+    await prisma.subscription.deleteMany({ where: { organization_id } });
   },
 };

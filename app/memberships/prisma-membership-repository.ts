@@ -15,7 +15,7 @@ function toMembership(row: MembershipRow): Membership {
   };
 }
 
-export const prismaMembershipRepository: MembershipRepository = {
+export const membershipRepository: MembershipRepository = {
   create: async (input): Promise<Membership> => {
     try {
       const row = await prisma.membership.create({ data: input });
@@ -31,5 +31,9 @@ export const prismaMembershipRepository: MembershipRepository = {
   findByOrganizationId: async (organization_id): Promise<Membership[]> => {
     const rows = await prisma.membership.findMany({ where: { organization_id } });
     return rows.map(toMembership);
+  },
+
+  deleteByOrganizationId: async (organization_id): Promise<void> => {
+    await prisma.membership.deleteMany({ where: { organization_id } });
   },
 };

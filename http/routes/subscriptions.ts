@@ -1,5 +1,5 @@
 import express from "express";
-import { prismaSubscriptionRepository } from "../../app/subscriptions/prisma-subscription-repository";
+import { subscriptionRepository } from "../../app/subscriptions/prisma-subscription-repository";
 import {
   OrganizationAlreadyHasSubscriptionError,
   SubscriptionNotFoundError,
@@ -11,9 +11,9 @@ import { validateBody } from "../validate-body";
 import { createSubscriptionSchema, updateSubscriptionStatusSchema } from "../schemas";
 
 const router = express.Router();
-const createSubscription = new CreateSubscriptionUC(prismaSubscriptionRepository);
-const updateSubscriptionStatus = new UpdateSubscriptionStatusUC(prismaSubscriptionRepository);
-const getOrganizationSubscription = new GetOrganizationSubscriptionUC(prismaSubscriptionRepository);
+const createSubscription = new CreateSubscriptionUC(subscriptionRepository);
+const updateSubscriptionStatus = new UpdateSubscriptionStatusUC(subscriptionRepository);
+const getOrganizationSubscription = new GetOrganizationSubscriptionUC(subscriptionRepository);
 
 router.post(
   "/organizations/:id/subscription",

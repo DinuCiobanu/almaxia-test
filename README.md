@@ -119,3 +119,50 @@ would need a DB-backed lookup behind the same
 new problem this introduces is anything that needs to see across tenants
 at once (billing rollups, cross-org admin views) — once tenant data is
 physically isolated, those stop being a single query.
+
+## AI tooling disclosure
+
+This entire repository — backend, tests, frontend, the shared contract,
+git hooks — was built with **Claude Code** (Claude Sonnet 5), an agentic
+coding CLI, working interactively from natural-language instructions
+rather than one-shot generation from a single prompt.
+
+**What I changed or rejected from what it proposed:**
+- The first pass at use cases had Prisma calls embedded directly in them;
+  I required a repository-interface split instead, with repos returning
+  plain data structures rather than Prisma's own row types.
+- Use cases were originally plain functions; I required them as classes
+  with an `execute()` method and the repository injected via the
+  constructor.
+- Its own design recommendation was UUID primary keys, with a reasoned
+  case for it (no single point of ID-generation authority once data
+  might span multiple databases, per the scaling section above); I
+  overrode that in favor of autoincrement integers anyway, which meant
+  resetting the migration history rather than an additive migration.
+- More than once mid-session a file changed on disk in a way neither of
+  us intended (an editor auto-format, a stray save reintroducing an
+  already-reverted change); it was told explicitly to flag those rather
+  than silently "fix" them on its own judgment, which it did each time.
+
+**How I checked the generated code was actually correct**, not just
+plausible-looking:
+- `tsc --noEmit` (backend) and `tsc -b` (frontend) after every change,
+  not just at the end.
+- The real mocha suite against an actual Postgres test database — no
+  mocked repositories — after every change that touched a use case.
+- Every new endpoint exercised live: booting the server, hitting it with
+  curl, and checking rows directly in Postgres via `psql` rather than
+  trusting the API's own responses about what it did.
+- The frontend checked in an actual driven browser against the live
+  backend and seeded data — both the happy path and the error path (an
+  unknown organization id) — not just a passing build.
+- The pre-commit/pre-push hooks weren't accepted on "the script looks
+  right": proven by actually running `git commit` with a deliberately
+  broken type on the backend, then again with one isolated to the
+  frontend, confirming both times the commit was rejected and `git log`
+  still showed no new commit, before reverting.
+- The OpenAPI generator (Zod's `z.toJSONSchema`) wasn't assumed correct
+  from reading Zod's docs — running it surfaced a real bug
+  (`z.coerce.date()` can't be represented in JSON Schema at all), which
+  was then fixed at the contract level, not papered over in the
+  generator.

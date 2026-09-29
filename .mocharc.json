@@ -1,0 +1,5 @@
+{
+  "require": ["tsx", "./mocha.setup.ts"],
+  "spec": "app/**/*.spec.ts",
+  "timeout": 10000
+}

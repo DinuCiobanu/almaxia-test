@@ -9,8 +9,6 @@ import openapiRouter from "./routes/openapi";
 
 const app = express();
 app.use(express.json());
-// ponytail: open CORS for local dev (ui/ on a different port); lock this
-// down to a specific origin before deploying anywhere real.
 app.use((_req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();

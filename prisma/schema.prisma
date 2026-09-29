@@ -6,3 +6,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Organization {
+  org_id     String   @id @default(uuid())
+  name       String
+  country    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("organizations")
+}

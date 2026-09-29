@@ -1,7 +1,7 @@
 import { Prisma, type Subscription as SubscriptionRow } from "@prisma/client";
 import { prisma } from "../prisma";
 import { OrganizationAlreadyHasSubscriptionError, SubscriptionNotFoundError } from "./errors";
-import type { Subscription } from "./subscription";
+import { STATUSES, type Subscription } from "./subscription";
 import type { SubscriptionRepository } from "./subscription-repository";
 
 function toSubscription(row: SubscriptionRow): Subscription {
@@ -21,7 +21,7 @@ export const prismaSubscriptionRepository: SubscriptionRepository = {
         data: {
           organization_id: input.organization_id,
           plan: input.plan,
-          status: input.status ?? "ACTIVE",
+          status: input.status ?? STATUSES.ACTIVE,
           ...(input.started_at ? { started_at: input.started_at } : {}),
         },
       });
@@ -37,13 +37,13 @@ export const prismaSubscriptionRepository: SubscriptionRepository = {
   updateStatus: async (input): Promise<Subscription> => {
     try {
       const row = await prisma.subscription.update({
-        where: { subscription_id: input.subscription_id },
+        where: { organization_id: input.organization_id },
         data: { status: input.status },
       });
       return toSubscription(row);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
-        throw new SubscriptionNotFoundError(input.subscription_id);
+        throw new SubscriptionNotFoundError(input.organization_id);
       }
       throw error;
     }

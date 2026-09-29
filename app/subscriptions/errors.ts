@@ -5,7 +5,7 @@ export class OrganizationAlreadyHasSubscriptionError extends Error {
 }
 
 export class SubscriptionNotFoundError extends Error {
-  constructor(subscription_id: string) {
-    super(`subscription ${subscription_id} not found`);
+  constructor(organization_id: string) {
+    super(`organization ${organization_id} has no subscription`);
   }
 }

@@ -1,8 +1,10 @@
-export const CAPABILITIES = [
-  "BASIC_DASHBOARD",
-  "RECOMMENDATIONS",
-  "EVIDENCE_CAPTURE",
-  "API_ACCESS",
-] as const;
+export const CAPABILITY = {
+  BASIC_DASHBOARD: "BASIC_DASHBOARD",
+  RECOMMENDATIONS: "RECOMMENDATIONS",
+  EVIDENCE_CAPTURE: "EVIDENCE_CAPTURE",
+  API_ACCESS: "API_ACCESS",
+} as const;
 
-export type Capability = (typeof CAPABILITIES)[number];
+export type Capability = (typeof CAPABILITY)[keyof typeof CAPABILITY];
+
+export const CAPABILITIES = Object.values(CAPABILITY);

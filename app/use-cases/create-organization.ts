@@ -1,8 +1,10 @@
 import type { Organization } from "../organizations/organization";
-import type {
-  CreateOrganizationInput,
-  OrganizationRepository,
-} from "../organizations/organization-repository";
+import type { OrganizationRepository } from "../organizations/organization-repository";
+
+export type CreateOrganizationInput = {
+  name: string;
+  country: string;
+};
 
 export class CreateOrganizationUC {
   constructor(private readonly repo: OrganizationRepository) {}

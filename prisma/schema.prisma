@@ -14,5 +14,40 @@ model Organization {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  memberships Membership[]
+
   @@map("organizations")
+}
+
+model User {
+  user_id    String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  memberships Membership[]
+
+  @@map("users")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Membership {
+  membership_id   String   @id @default(uuid())
+  user_id         String
+  organization_id String
+  role            Role
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  user         User         @relation(fields: [user_id], references: [user_id])
+  organization Organization @relation(fields: [organization_id], references: [org_id])
+
+  @@unique([user_id, organization_id])
+  @@map("memberships")
 }

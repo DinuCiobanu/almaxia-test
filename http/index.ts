@@ -8,6 +8,8 @@ import { MembershipAlreadyExistsError } from "../app/memberships/errors";
 import { CreateOrganizationUC } from "../app/use-cases/create-organization";
 import { CreateUserUC } from "../app/use-cases/create-user";
 import { AddOrganizationMemberUC } from "../app/use-cases/add-organization-member";
+import { validateBody } from "./validate-body";
+import { createOrganizationSchema, createUserSchema, createMembershipSchema } from "./schemas";
 
 const app = express();
 app.use(express.json());
@@ -21,12 +23,12 @@ const createOrganization = new CreateOrganizationUC(prismaOrganizationRepository
 const createUser = new CreateUserUC(prismaUserRepository);
 const addOrganizationMember = new AddOrganizationMemberUC(prismaMembershipRepository);
 
-app.post("/organizations", async (req, res) => {
+app.post("/organizations", validateBody(createOrganizationSchema), async (req, res) => {
   const organization = await createOrganization.execute(req.body);
   res.status(201).json(organization);
 });
 
-app.post("/users", async (req, res) => {
+app.post("/users", validateBody(createUserSchema), async (req, res) => {
   try {
     const user = await createUser.execute(req.body);
     res.status(201).json(user);
@@ -39,7 +41,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.post("/memberships", async (req, res) => {
+app.post("/memberships", validateBody(createMembershipSchema), async (req, res) => {
   try {
     const membership = await addOrganizationMember.execute(req.body);
     res.status(201).json(membership);
